@@ -1,28 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import * as serviceWorker from './serviceWorker';
 import './styles/index.css';
-import { Home, User, Listings, Listing, Host, NotFound } from './sections';
+import { Layout } from 'antd';
+import { Home, User, Listings, Listing, Host, NotFound, Login } from './sections';
+import { Viewer } from './lib/types';
 
 const client = new ApolloClient({
 	uri: 'http://localhost:9000/api',
 	cache: new InMemoryCache(),
 });
 
-const App = () => (
-	<Router>
-		<Switch>
-			<Route exact path="/" component={Home} />
-			<Route exact path="/host" component={Host} />
-			<Route exact path="/listing/:id" component={Listing} />
-			<Route exact path="/listings/:location?" component={Listings} />
-			<Route exact path="/user/:id" component={User} />
-			<Route component={NotFound} />
-		</Switch>
-	</Router>
-);
+const initialViewer: Viewer = {
+	id: null,
+	token: null,
+	avatar: null,
+	hasWallet: null,
+	didRequest: false,
+};
+
+const App = () => {
+	const [viewer, setViewer] = useState<Viewer>(initialViewer);
+	console.log(viewer);
+	return (
+		<Router>
+			<Layout id="app">
+				<Switch>
+					<Route exact path="/">
+						<Home />
+					</Route>
+					<Route exact path="/host">
+						<Host />
+					</Route>
+					<Route exact path="/listing/:id">
+						<Listing />
+					</Route>
+					<Route exact path="/listings/:location?">
+						<Listings />
+					</Route>
+					<Route exact path="/login">
+						<Login setViewer={setViewer} />
+					</Route>
+					<Route exact path="/user/:id">
+						<User />
+					</Route>
+					<Route>
+						<NotFound />
+					</Route>
+				</Switch>
+			</Layout>
+		</Router>
+	);
+};
 
 ReactDOM.render(
 	<ApolloProvider client={client}>
