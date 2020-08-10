@@ -4,9 +4,11 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import * as serviceWorker from './serviceWorker';
 import './styles/index.css';
-import { Layout } from 'antd';
-import { Home, User, Listings, Listing, Host, NotFound, Login } from './sections';
+import { Layout, Affix } from 'antd';
 import { Viewer } from './lib/types';
+
+// Components
+import { AppHeader, Home, User, Listings, Listing, Host, NotFound, Login } from './sections';
 
 const client = new ApolloClient({
 	uri: 'http://localhost:9000/api',
@@ -27,6 +29,9 @@ const App = () => {
 	return (
 		<Router>
 			<Layout id="app">
+				<Affix offsetTop={0} className="app__affix-header">
+					<AppHeader viewer={viewer} setViewer={setViewer} />
+				</Affix>
 				<Switch>
 					<Route exact path="/">
 						<Home />

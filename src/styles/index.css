@@ -27,7 +27,7 @@
 	padding: 0 20px;
 }
 .app-header__logo img {
-	width: 36px;
+	width: 130px;
 }
 .app-header__search-input {
 	display: flex;
@@ -44,9 +44,9 @@
 	border: 1px solid #f0f1f2;
 	box-shadow: 0 2px 4px rgba(29, 34, 108, 0.1);
 }
-.app-header__menu-section {
-	float: right;
-}
+/* .app-header__menu-section {
+	float: left;
+} */
 .app-header-skeleton {
 	display: flex;
 	background: #fff;
