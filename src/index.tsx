@@ -11,7 +11,7 @@ import { Viewer } from './lib/types';
 import { AppHeader, Home, User, Listings, Listing, Host, NotFound, Login } from './sections';
 
 const client = new ApolloClient({
-	uri: 'http://localhost:9000/api',
+	uri: '/api',
 	cache: new InMemoryCache(),
 });
 
@@ -25,7 +25,6 @@ const initialViewer: Viewer = {
 
 const App = () => {
 	const [viewer, setViewer] = useState<Viewer>(initialViewer);
-	console.log(viewer);
 	return (
 		<Router>
 			<Layout id="app">
