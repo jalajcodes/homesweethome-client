@@ -1,17 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, useMutation, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { LOG_IN } from './lib/graphql/mutations/LogIn';
+import { LogIn as LogInData, LogInVariables } from './lib/graphql/mutations/LogIn/__generated__/LogIn';
 import * as serviceWorker from './serviceWorker';
 import './styles/index.css';
-import { Layout, Affix } from 'antd';
+import { Layout, Affix, Spin } from 'antd';
 import { Viewer } from './lib/types';
 
 // Components
 import { AppHeader, Home, User, Listings, Listing, Host, NotFound, Login } from './sections';
+import { AppHeaderSkeleton, ErrorBanner } from './lib/components';
+
+const authLink = setContext((_, { headers }) => {
+	// get the authentication token from session storage if it exists
+	const token = sessionStorage.getItem('token');
+	// return the headers to the context so httpLink can read them
+	return {
+		headers: {
+			'X-CSRF-TOKEN': token || '',
+		},
+	};
+});
+
+const httpLink = createHttpLink({
+	uri: '/api',
+});
 
 const client = new ApolloClient({
-	uri: '/api',
+	link: authLink.concat(httpLink),
 	cache: new InMemoryCache(),
 });
 
@@ -25,9 +44,45 @@ const initialViewer: Viewer = {
 
 const App = () => {
 	const [viewer, setViewer] = useState<Viewer>(initialViewer);
+
+	const [login, { error }] = useMutation<LogInData, LogInVariables>(LOG_IN, {
+		onCompleted: (data) => {
+			if (data && data.login) {
+				setViewer(data.login);
+
+				if (data.login.token) {
+					sessionStorage.setItem('token', data.login.token);
+				} else {
+					sessionStorage.removeItem('token');
+				}
+			}
+		},
+	});
+
+	const loginRef = useRef(login);
+
+	useEffect(() => {
+		loginRef.current();
+	}, []);
+
+	const loginErrorBanner = error ? (
+		<ErrorBanner message="Something went wrong while you were being logged in. Please try again later! ;(" />
+	) : null;
+
+	if (!viewer.didRequest && !error) {
+		return (
+			<Layout className="app-skeleton">
+				<AppHeaderSkeleton />
+				<div className="app-skeleton__spin-section">
+					<Spin size="large" tip="Launching the App..." />
+				</div>
+			</Layout>
+		);
+	}
 	return (
 		<Router>
 			<Layout id="app">
+				{loginErrorBanner}
 				<Affix offsetTop={0} className="app__affix-header">
 					<AppHeader viewer={viewer} setViewer={setViewer} />
 				</Affix>

@@ -22,13 +22,15 @@ export const Login = ({ setViewer }: Props) => {
 		LogInVariables
 	>(LOG_IN, {
 		onCompleted: (data) => {
-			if (data && data.login) {
+			if (data && data.login && data.login.token) {
 				setViewer(data.login);
+				sessionStorage.setItem('token', data.login.token);
 				displaySuccessNotification("You've successfully logged in!");
 			}
 		},
 	});
 
+	// if query for auth url is successful, redirect.
 	if (authQueryData) {
 		window.location.href = authQueryData.authUrl;
 	}
@@ -36,8 +38,13 @@ export const Login = ({ setViewer }: Props) => {
 		displayErrorMessage("Sorry! We weren't able to log you in. Please try again later!");
 	}
 
+	// just to make useEffect believe logInMutation won't change during rerenders.
 	const logInRef = useRef(logInMutaion);
 
+	// after being redirected back from google consent form if
+	// the code param exists in the url, this useEffect hook will run
+	// the login mutation with the code variable, our backend uses this
+	// code to fetch details of the user.
 	useEffect(() => {
 		const code = new URL(window.location.href).searchParams.get('code');
 		if (code) {
@@ -49,7 +56,7 @@ export const Login = ({ setViewer }: Props) => {
 		}
 	}, []);
 
-	// Ant design
+	// Ant design components
 	const { Content } = Layout;
 	const { Title, Text } = Typography;
 
