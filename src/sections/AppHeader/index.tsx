@@ -3,15 +3,15 @@ import { Layout } from 'antd';
 import { Link } from 'react-router-dom';
 import logo from './assets/hsh-logo-2.png';
 import { MenuItems } from './components';
-import { Viewer } from '../../lib/types';
+// import { Viewer } from '../../lib/types';
 
 const { Header } = Layout;
 
-interface Props {
-	viewer: Viewer;
-	setViewer: (viewer: Viewer) => void;
-}
-export const AppHeader = ({ viewer, setViewer }: Props) => {
+// interface Props {
+// 	viewer: Viewer;
+// 	setViewer: (viewer: Viewer) => void;
+// }
+export const AppHeader = () => {
 	return (
 		<Header className="app-header">
 			<div className="app-header__logo-search-section">
@@ -22,7 +22,7 @@ export const AppHeader = ({ viewer, setViewer }: Props) => {
 				</div>
 			</div>
 			<div>
-				<MenuItems viewer={viewer} setViewer={setViewer} />
+				<MenuItems />
 			</div>
 		</Header>
 	);

@@ -9,6 +9,7 @@ import * as serviceWorker from './serviceWorker';
 import './styles/index.css';
 import { Layout, Affix, Spin } from 'antd';
 import { Viewer } from './lib/types';
+import ViewerStateContext from './ViewerStateContext';
 
 // Components
 import { AppHeader, Home, User, Listings, Listing, Host, NotFound, Login } from './sections';
@@ -34,7 +35,7 @@ const client = new ApolloClient({
 	cache: new InMemoryCache(),
 });
 
-const initialViewer: Viewer = {
+const initialViewerState: Viewer = {
 	id: null,
 	token: null,
 	avatar: null,
@@ -43,7 +44,7 @@ const initialViewer: Viewer = {
 };
 
 const App = () => {
-	const [viewer, setViewer] = useState<Viewer>(initialViewer);
+	const [viewer, setViewer] = useState<Viewer>(initialViewerState);
 
 	const [login, { error }] = useMutation<LogInData, LogInVariables>(LOG_IN, {
 		onCompleted: (data) => {
@@ -80,37 +81,39 @@ const App = () => {
 		);
 	}
 	return (
-		<Router>
-			<Layout id="app">
-				{loginErrorBanner}
-				<Affix offsetTop={0} className="app__affix-header">
-					<AppHeader viewer={viewer} setViewer={setViewer} />
-				</Affix>
-				<Switch>
-					<Route exact path="/">
-						<Home />
-					</Route>
-					<Route exact path="/host">
-						<Host />
-					</Route>
-					<Route exact path="/listing/:id">
-						<Listing />
-					</Route>
-					<Route exact path="/listings/:location?">
-						<Listings />
-					</Route>
-					<Route exact path="/login">
-						<Login setViewer={setViewer} />
-					</Route>
-					<Route exact path="/user/:id">
-						<User />
-					</Route>
-					<Route>
-						<NotFound />
-					</Route>
-				</Switch>
-			</Layout>
-		</Router>
+		<ViewerStateContext.Provider value={{ viewer, setViewer }}>
+			<Router>
+				<Layout id="app">
+					{loginErrorBanner}
+					<Affix offsetTop={0} className="app__affix-header">
+						<AppHeader />
+					</Affix>
+					<Switch>
+						<Route exact path="/">
+							<Home />
+						</Route>
+						<Route exact path="/host">
+							<Host />
+						</Route>
+						<Route exact path="/listing/:id">
+							<Listing />
+						</Route>
+						<Route exact path="/listings/:location?">
+							<Listings />
+						</Route>
+						<Route exact path="/login">
+							<Login />
+						</Route>
+						<Route exact path="/user/:id">
+							<User />
+						</Route>
+						<Route>
+							<NotFound />
+						</Route>
+					</Switch>
+				</Layout>
+			</Router>
+		</ViewerStateContext.Provider>
 	);
 };
 

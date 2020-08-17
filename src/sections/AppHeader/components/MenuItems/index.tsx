@@ -1,24 +1,29 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Menu, Avatar } from 'antd';
 import { HomeOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { Viewer } from '../../../../lib/types';
+// import { Viewer } from '../../../../lib/types';
 import { useMutation } from '@apollo/client';
 import { LOG_OUT } from '../../../../lib/graphql/mutations';
 import { LogOut as LogOutData } from '../../../../lib/graphql/mutations/LogOut/__generated__/LogOut';
 import { displaySuccessNotification, displayErrorMessage } from '../../../../lib/utils';
+import ViewerStateContext from '../../../../ViewerStateContext';
 
 const { SubMenu, Item } = Menu;
 
-interface Props {
-	viewer: Viewer;
-	setViewer: (viewer: Viewer) => void;
-}
+// interface Props {
+// 	viewer: Viewer;
+// 	setViewer: (viewer: Viewer) => void;
+// }
 
-export const MenuItems = ({ viewer, setViewer }: Props) => {
+export const MenuItems = () => {
+	const state = useContext(ViewerStateContext);
+	const viewer = state!.viewer;
+	const setViewer = state!.setViewer;
+
 	const [logOut] = useMutation<LogOutData>(LOG_OUT, {
 		onCompleted: (data) => {
-			if (data && data.logout) {
+			if (state && data && data.logout) {
 				setViewer(data.logout);
 				sessionStorage.removeItem('token');
 				displaySuccessNotification("You've Successfully Logged Out.");
