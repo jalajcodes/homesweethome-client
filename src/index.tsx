@@ -9,7 +9,7 @@ import * as serviceWorker from './serviceWorker';
 import './styles/index.css';
 import { Layout, Affix, Spin } from 'antd';
 import { Viewer } from './lib/types';
-import ViewerStateContext from './ViewerStateContext';
+import ViewerStateContext from '../src/lib/context/ViewerStateContext';
 
 // Components
 import { AppHeader, Home, User, Listings, Listing, Host, NotFound, Login } from './sections';
