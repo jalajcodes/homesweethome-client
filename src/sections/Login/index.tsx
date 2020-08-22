@@ -2,13 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { Layout, Typography, Card, Spin } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined, GoogleOutlined } from '@ant-design/icons';
 import { AUTH_URL } from '../../lib/graphql/queries';
 import { LOG_IN, GUEST_LOGIN } from '../../lib/graphql/mutations';
 import { AuthUrl as AuthUrlData } from '../../lib/graphql/queries/AuthUrl/__generated__/AuthUrl';
 import { LogIn as LogInData, LogInVariables } from '../../lib/graphql/mutations/LogIn/__generated__/LogIn';
 import { GuestLogin as GuestLoginData } from '../../lib/graphql/mutations/LogIn/__generated__/GuestLogin';
-import googleLogo from './assets/google_logo.jpg';
+// import googleLogo from './assets/google_logo.jpg';
 import { ErrorBanner } from '../../lib/components';
 import { displayErrorMessage, displaySuccessNotification } from '../../lib/utils';
 import useViewerState from '../../lib/context/useViewerState';
@@ -111,18 +111,27 @@ export const Login = () => {
 					<Title level={3} className="log-in-card__intro-title">
 						Log in to HomeSweetHome!
 					</Title>
-					<Text>Sign in with Google to start booking available rentals!</Text>
+					<Text>Sign In to start booking available rentals!</Text>
 				</div>
 				<button className="log-in-card__google-button" onClick={() => authQuery()}>
-					<img src={googleLogo} alt="Google Logo" className="log-in-card__google-button-logo" />
-					<span className="log-in-card__google-button-text">Sign in with Google</span>
+					{/* <img src={googleLogo} alt="Google Logo" className="log-in-card__google-button-logo" /> */}
+					<div className="login-col-1">
+						<GoogleOutlined />
+					</div>
+					<div className="login-col-2">
+						<span className="log-in-card__google-button-text">Sign in with Google</span>
+					</div>
 				</button>
-				<button className="log-in-card__google-button" onClick={() => guestLoginMutation()}>
-					<UserOutlined /> <span className="log-in-card__google-button-text">Sign in as Guest</span>
+				<button className="log-in-card__google-button guestLogin" onClick={() => guestLoginMutation()}>
+					<div className="login-col-1">
+						<UserOutlined />
+					</div>
+					<div className="login-col-2">
+						<span className="log-in-card__google-button-text">Sign in as Guest</span>
+					</div>
 				</button>
 				<Text type="secondary">
-					Note: By signing in, you'll be redirected to the Google consent form to sign in with your Google
-					account.
+					Note: By signing in, you'll be redirected to the consent form to sign in with your account.
 				</Text>
 			</Card>
 		</Content>

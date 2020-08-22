@@ -161,6 +161,11 @@
 	background: transparent;
 	cursor: pointer;
 }
+
+.home-hero__cards .ant-card-bordered .ant-card-cover {
+	margin: 0;
+}
+
 .home-hero__cards .ant-card-cover:before {
 	content: '';
 	display: block;
@@ -169,7 +174,7 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background: #1d226c;
+	background: #eeac1dcb;
 	opacity: 0.5;
 	-webkit-transition: all 0.3s linear;
 	transition: all 0.3s linear;
@@ -185,6 +190,7 @@
 	font-weight: 700;
 	position: relative;
 	bottom: 40px;
+	pointer-events: none;
 }
 .home-listings {
 	padding: 40px 0 20px;
@@ -496,10 +502,12 @@
 }
 .log-in-card__google-button {
 	margin: 10px auto;
+	padding: 10px;
 	border-radius: 2px;
 	background-color: #618be7;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.24), 0 0 1px 0 rgba(0, 0, 0, 0.12);
 	border: none;
+	width: 184px;
 	display: flex;
 	align-items: center;
 	padding: 1px;
@@ -507,12 +515,24 @@
 	cursor: pointer;
 }
 
-.log-in-card__google-button:last-of-type {
-	margin-bottom: 40px;
-	width: 184px;
+.login-col-1 {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	padding: 10px;
+}
+
+.login-col-2 {
 	display: flex;
 	justify-content: center;
-	align-items: center;
+}
+
+.guestLogin {
+	background-color: #ff932b;
+}
+
+.log-in-card__google-button:last-of-type {
+	margin-bottom: 40px;
 }
 
 .log-in-card__google-button:first-of-type {
