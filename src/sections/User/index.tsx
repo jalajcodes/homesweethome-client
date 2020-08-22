@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
-import { USER } from '../../lib/graphql/queries/User';
+import { USER } from '../../lib/graphql/queries';
 import { User as UserData, UserVariables } from '../../lib/graphql/queries/User/__generated__/User';
 import { Layout, Col, Row } from 'antd';
 import { PageSkeleton, ErrorBanner } from '../../lib/components';
@@ -64,7 +64,7 @@ export const User = () => {
 	if (error) {
 		return (
 			<Content className="user">
-				<ErrorBanner description="This user may not exist or we've encountered an error. Please try again soon." />
+				<ErrorBanner description="This user may not exist or we've encountered an error. Please try again." />
 				<PageSkeleton />
 			</Content>
 		);

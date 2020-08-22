@@ -6,7 +6,7 @@ import { setContext } from '@apollo/client/link/context';
 import { LOG_IN } from './lib/graphql/mutations/LogIn';
 import { LogIn as LogInData, LogInVariables } from './lib/graphql/mutations/LogIn/__generated__/LogIn';
 import * as serviceWorker from './serviceWorker';
-import './styles/index.css';
+import './styles/index.less';
 import { Layout, Affix, Spin } from 'antd';
 import { Viewer } from './lib/types';
 import ViewerStateContext from '../src/lib/context/ViewerStateContext';

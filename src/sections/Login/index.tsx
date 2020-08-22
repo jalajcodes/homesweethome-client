@@ -2,10 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { Layout, Typography, Card, Spin } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { AUTH_URL } from '../../lib/graphql/queries';
-import { LOG_IN } from '../../lib/graphql/mutations';
+import { LOG_IN, GUEST_LOGIN } from '../../lib/graphql/mutations';
 import { AuthUrl as AuthUrlData } from '../../lib/graphql/queries/AuthUrl/__generated__/AuthUrl';
 import { LogIn as LogInData, LogInVariables } from '../../lib/graphql/mutations/LogIn/__generated__/LogIn';
+import { GuestLogin as GuestLoginData } from '../../lib/graphql/mutations/LogIn/__generated__/GuestLogin';
 import googleLogo from './assets/google_logo.jpg';
 import { ErrorBanner } from '../../lib/components';
 import { displayErrorMessage, displaySuccessNotification } from '../../lib/utils';
@@ -27,7 +29,18 @@ export const Login = () => {
 			if (data && data.login && data.login.token) {
 				setViewer(data.login);
 				sessionStorage.setItem('token', data.login.token);
-				displaySuccessNotification("You've successfully logged in!");
+				displaySuccessNotification("You've been successfully logged in!");
+			}
+		},
+	});
+	const [guestLoginMutation, { loading: guestLoading, error: guestError, data: guestData }] = useMutation<
+		GuestLoginData
+	>(GUEST_LOGIN, {
+		onCompleted: (data) => {
+			if (data && data.loginAsGuest && data.loginAsGuest.token) {
+				setViewer(data.loginAsGuest);
+				sessionStorage.setItem('token', data.loginAsGuest.token);
+				displaySuccessNotification('Successfully logged in as a Test User!');
 			}
 		},
 	});
@@ -62,7 +75,7 @@ export const Login = () => {
 	const { Content } = Layout;
 	const { Title, Text } = Typography;
 
-	if (logInLoading) {
+	if (logInLoading || guestLoading) {
 		return (
 			<Content className="log-in">
 				<Spin size="large" tip="Logging you in..."></Spin>
@@ -75,9 +88,15 @@ export const Login = () => {
 		return <Redirect to={`/user/${id}`} />;
 	}
 
-	const logInErrorBannerElement = logInError ? (
-		<ErrorBanner description="We weren't able to log you in. Please try again soon." />
-	) : null;
+	if (guestData && guestData.loginAsGuest) {
+		const { id } = guestData.loginAsGuest;
+		return <Redirect to={`/user/${id}`} />;
+	}
+
+	const logInErrorBannerElement =
+		logInError || guestError ? (
+			<ErrorBanner description="We weren't able to log you in. Please try again soon." />
+		) : null;
 
 	return (
 		<Content className="log-in">
@@ -97,6 +116,9 @@ export const Login = () => {
 				<button className="log-in-card__google-button" onClick={() => authQuery()}>
 					<img src={googleLogo} alt="Google Logo" className="log-in-card__google-button-logo" />
 					<span className="log-in-card__google-button-text">Sign in with Google</span>
+				</button>
+				<button className="log-in-card__google-button" onClick={() => guestLoginMutation()}>
+					<UserOutlined /> <span className="log-in-card__google-button-text">Sign in as Guest</span>
 				</button>
 				<Text type="secondary">
 					Note: By signing in, you'll be redirected to the Google consent form to sign in with your Google

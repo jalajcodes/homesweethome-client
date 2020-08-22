@@ -1,4 +1,4 @@
-@import '~antd/dist/antd.css';
+@import '~antd/dist/antd.less';
 @import url(https://fonts.googleapis.com/css?family=Sacramento);
 .menu {
 	width: 100%;
@@ -495,9 +495,9 @@
 	margin-top: 5px;
 }
 .log-in-card__google-button {
-	margin: 40px auto;
+	margin: 10px auto;
 	border-radius: 2px;
-	background-color: #4285f4;
+	background-color: #618be7;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.24), 0 0 1px 0 rgba(0, 0, 0, 0.12);
 	border: none;
 	display: flex;
@@ -506,6 +506,19 @@
 	color: #fff;
 	cursor: pointer;
 }
+
+.log-in-card__google-button:last-of-type {
+	margin-bottom: 40px;
+	width: 184px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.log-in-card__google-button:first-of-type {
+	margin-top: 40px;
+}
+
 .log-in-card__google-button:hover {
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.24), 0 0 2px 0 rgba(0, 0, 0, 0.12);
 }

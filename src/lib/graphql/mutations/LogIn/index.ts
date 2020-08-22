@@ -11,3 +11,15 @@ export const LOG_IN = gql`
 		}
 	}
 `;
+
+export const GUEST_LOGIN = gql`
+	mutation GuestLogin {
+		loginAsGuest {
+			id
+			token
+			avatar
+			hasWallet
+			didRequest
+		}
+	}
+`;
