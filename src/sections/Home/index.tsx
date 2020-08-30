@@ -1,17 +1,46 @@
 import React from 'react';
-import { HomeHeroArea } from './components';
 import { Col, Row, Layout, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import mapBackground from './assets/map-background.jpg';
 import sanFransiscoImage from './assets/san-fransisco.jpg';
 import cancunImage from './assets/cancun.jpg';
+import { useQuery } from '@apollo/client';
+import { LISTINGS } from '../../lib/graphql/queries/Listings';
+import { Listings as ListingsData, ListingsVariables } from '../../lib/graphql/queries/Listings/__generated__/Listings';
+import { ListingsFilter } from '../../lib/graphql/globalTypes';
+import { HomeHeroArea, HomeListings, HomeListingsSkeleton } from './components';
+
 const { Content } = Layout;
 const { Paragraph, Title } = Typography;
 
+const PAGE_LIMIT = 4;
+const PAGE_NUMBER = 1;
+
 export const Home = () => {
+	const { loading, data } = useQuery<ListingsData, ListingsVariables>(LISTINGS, {
+		variables: {
+			limit: PAGE_LIMIT,
+			page: PAGE_NUMBER,
+			filter: ListingsFilter.PRICE_HIGH_TO_LOW,
+		},
+	});
+
+	const renderListingsSection = () => {
+		if (loading) {
+			return <HomeListingsSkeleton />;
+		}
+
+		if (data) {
+			return <HomeListings title="Premium Listings" listings={data.listings.result} />;
+		}
+
+		return null;
+	};
+
 	return (
 		<Content className="home" style={{ backgroundImage: `url(${mapBackground})` }}>
 			<HomeHeroArea />
+
 			<div className="home__cta-section">
 				<Title level={2} className="home__cta-section-title">
 					Your guide for all things rental
@@ -24,6 +53,8 @@ export const Home = () => {
 					Popular listings in the United States
 				</Link>
 			</div>
+
+			{renderListingsSection()}
 
 			<div className="home__listings">
 				<Title level={4} className="home__listings-title">

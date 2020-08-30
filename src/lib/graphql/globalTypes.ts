@@ -13,6 +13,9 @@ export enum ListingType {
 }
 
 export enum ListingsFilter {
+  NUM_OF_GUESTS_1 = "NUM_OF_GUESTS_1",
+  NUM_OF_GUESTS_2 = "NUM_OF_GUESTS_2",
+  NUM_OF_GUESTS_GT_2 = "NUM_OF_GUESTS_GT_2",
   PRICE_HIGH_TO_LOW = "PRICE_HIGH_TO_LOW",
   PRICE_LOW_TO_HIGH = "PRICE_LOW_TO_HIGH",
 }
