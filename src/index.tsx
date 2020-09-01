@@ -15,6 +15,7 @@ import ViewerStateContext from '../src/lib/context/ViewerStateContext';
 import { AppHeader, Home, User, Listings, Listing, Host, NotFound, Login } from './sections';
 import { AppHeaderSkeleton, ErrorBanner } from './lib/components';
 
+// check apollo docs for more info about this snippet
 const authLink = setContext((_, { headers }) => {
 	// get the authentication token from session storage if it exists
 	const token = sessionStorage.getItem('token');
