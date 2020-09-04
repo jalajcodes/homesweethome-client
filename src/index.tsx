@@ -12,7 +12,7 @@ import { Viewer } from './lib/types';
 import ViewerStateContext from '../src/lib/context/ViewerStateContext';
 
 // Components
-import { AppHeader, Home, User, Listings, Listing, Host, NotFound, Login } from './sections';
+import { AppHeader, Home, User, Listings, Listing, Host, NotFound, Login, Stripe } from './sections';
 import { AppHeaderSkeleton, ErrorBanner } from './lib/components';
 
 // check apollo docs for more info about this snippet
@@ -107,6 +107,9 @@ const App = () => {
 						</Route>
 						<Route exact path="/user/:id">
 							<User />
+						</Route>
+						<Route exact path="/stripe">
+							<Stripe />
 						</Route>
 						<Route>
 							<NotFound />

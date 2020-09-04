@@ -11,14 +11,19 @@ import useViewerState from '../../lib/context/useViewerState';
 const { Content } = Layout;
 const PAGE_LIMIT = 4;
 
+interface Params {
+	id: string;
+}
+
 export const User = () => {
 	const { viewer } = useViewerState(); // global viewer state
-	const { id: idUrlParam } = useParams(); // this is "/user/:id"
+	const { id: idUrlParam } = useParams<Params>(); // this is "/user/:id"
 
 	const [listingsPage, setListingsPage] = useState(1);
 	const [bookingsPage, setBookingsPage] = useState(1);
 
-	const { data, error, loading } = useQuery<UserData, UserVariables>(USER, {
+
+	const { data, error, loading, refetch } = useQuery<UserData, UserVariables>(USER, {
 		variables: {
 			id: idUrlParam,
 			limit: PAGE_LIMIT,
@@ -27,13 +32,14 @@ export const User = () => {
 		},
 	});
 
+
 	const user = data ? data.user : null;
 	const viewerIsUser = viewer.id === idUrlParam;
 
 	const userListings = user ? user.listings : null;
 	const userBookings = user ? user.bookings : null;
 
-	const userProfileElement = user ? <UserProfile user={user} viewerIsUser={viewerIsUser} /> : null;
+	const userProfileElement = user ? <UserProfile user={user} viewerIsUser={viewerIsUser} refetch={refetch} /> : null;
 
 	const userListingsElement = userListings ? (
 		<UserListings
@@ -51,6 +57,11 @@ export const User = () => {
 			limit={PAGE_LIMIT}
 			setBookingsPage={setBookingsPage}
 		/>
+	) : null;
+
+	const stripeError = new URL(window.location.href).searchParams.get("stripe_error");
+	const stripeErrorBanner = stripeError ? (
+		<ErrorBanner description="We had an issue connecting with Stripe. Please try again soon." />
 	) : null;
 
 	if (loading) {
@@ -72,6 +83,7 @@ export const User = () => {
 
 	return (
 		<Content className="user">
+			{stripeErrorBanner}
 			<Row gutter={12} justify="space-between">
 				<Col xs={24}>{userProfileElement}</Col>
 				<Col xs={24}>
