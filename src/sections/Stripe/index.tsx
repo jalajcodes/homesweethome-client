@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { Redirect, useHistory } from 'react-router-dom'
 import { useMutation } from '@apollo/client';
 import { Layout, Spin } from 'antd'
-import { CONNECT_STRIPE } from '../../lib/graphql/mutations/ConnectStripe'
+import { CONNECT_STRIPE } from '../../lib/graphql/mutations/ConnectStripe';
 import { ConnectStripe as ConnectStripeData, ConnectStripeVariables } from '../../lib/graphql/mutations/ConnectStripe/__generated__/ConnectStripe';
-import useViewerState from '../../lib/context/useViewerState'
-import { displaySuccessNotification } from '../../lib/utils'
+import useViewerState from '../../lib/context/useViewerState';
+import { displaySuccessNotification } from '../../lib/utils';
 
 const { Content } = Layout
 
