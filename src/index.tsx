@@ -65,6 +65,7 @@ const App = () => {
 
 	useEffect(() => {
 		loginRef.current();
+
 	}, []);
 
 	const loginErrorBanner = error ? (
