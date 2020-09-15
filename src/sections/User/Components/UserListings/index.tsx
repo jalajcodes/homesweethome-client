@@ -49,7 +49,7 @@ export const UserListings = ({ userListings, listingsPage, setListingsPage, limi
 				Listings
 			</Title>
 			<Paragraph className="user-listings__description">
-				Listings this user currently hosts and has made available for bookings.
+				Currently hosted listings which are available for booking.
 			</Paragraph>
 			{userListingsList}
 		</div>
