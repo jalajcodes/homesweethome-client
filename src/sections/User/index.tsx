@@ -33,6 +33,7 @@ export const User = () => {
 	});
 
 
+
 	const user = data ? data.user : null;
 	const viewerIsUser = viewer.id === idUrlParam;
 

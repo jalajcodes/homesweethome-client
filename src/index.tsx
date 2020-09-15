@@ -88,7 +88,11 @@ const App = () => {
 				<Layout id="app">
 					{loginErrorBanner}
 					<Affix offsetTop={0} className="app__affix-header">
-						<AppHeader />
+						<div>
+
+
+							<AppHeader />
+						</div>
 					</Affix>
 					<Switch>
 						<Route exact path="/">
