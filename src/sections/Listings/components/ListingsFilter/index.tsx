@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select } from 'antd';
 import { ListingsFilter } from '../../../../lib/graphql/globalTypes';
+import { iconColor } from '../../../../lib/utils';
 
 interface Props {
 	filter: ListingsFilter;
@@ -13,7 +14,10 @@ export const ListingsFilters = ({ filter, setFilter }: Props) => {
 	return (
 		<div className="listings-filters">
 			<span>Filter By</span>
-			<Select dropdownStyle={{ backgroundColor: "blue" }} value={filter} onChange={(filter: ListingsFilter) => setFilter(filter)}>
+			<Select
+				dropdownStyle={{ border: `1px dotted ${iconColor}` }}
+				value={filter}
+				onChange={(filter: ListingsFilter) => setFilter(filter)}>
 				<Option value={ListingsFilter.PRICE_LOW_TO_HIGH}>Price: Low to High</Option>
 				<Option value={ListingsFilter.PRICE_HIGH_TO_LOW}>Price: High to Low</Option>
 				<Option value={ListingsFilter.NUM_OF_GUESTS_1}>Guest: 1</Option>
