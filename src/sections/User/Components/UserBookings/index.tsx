@@ -8,6 +8,7 @@ interface Props {
 	bookingsPage: number;
 	limit: number;
 	setBookingsPage: (page: number) => void;
+	viewerIsUser: boolean;
 }
 
 const { Paragraph, Text, Title } = Typography;

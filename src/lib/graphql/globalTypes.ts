@@ -20,7 +20,12 @@ export enum ListingsFilter {
   PRICE_LOW_TO_HIGH = "PRICE_LOW_TO_HIGH",
 }
 
+export interface DeleteListingInput {
+  id: string;
+}
+
 export interface HostListingInput {
+  id?: string | null;
   title: string;
   description: string;
   image: string;

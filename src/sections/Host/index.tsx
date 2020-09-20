@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layout, Typography, Form, Input, InputNumber, Radio, Upload, Button } from 'antd';
 import { UploadChangeParam } from 'antd/lib/upload';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
@@ -18,14 +18,22 @@ const { Content } = Layout;
 const { Text, Title } = Typography;
 const { Item } = Form;
 
+declare global {
+	interface Window {
+		placeSearch: any;
+	}
+}
+
 export const Host = () => {
 	const { viewer } = useViewerState();
 	const [imageLoading, setImageLoading] = useState(false);
+	const addressRef = useRef(null);
+	const [form] = Form.useForm();
 	const [imageBase64Value, setImageBase64Value] = useState<string | null>(null);
 
 	const [hostListing, { loading, data }] = useMutation<HostListingData, HostListingVariables>(HOST_LISTING, {
 		onCompleted: () => {
-			displaySuccessNotification("You've successfully created your listing!");
+			displaySuccessNotification('Successfully created new Listing!');
 		},
 		onError: (error) => {
 			console.log(error);
@@ -33,6 +41,20 @@ export const Host = () => {
 			displayErrorMessage("Sorry! We weren't able to create your listing. Please try again later.");
 		},
 	});
+
+	useEffect(() => {
+		const place = window.placeSearch({
+			key: process.env.REACT_APP_M_KEY,
+			container: document.querySelector('#placeSearch'),
+		});
+		place.on('change', (e: any) => {
+			form.setFieldsValue({
+				city: e.result.city,
+				state: e.result.state,
+				postalCode: e.result.postalCode,
+			});
+		});
+	}, [form]);
 
 	// if the mutation is successfull, redirect the user
 	if (data && data.hostListing) {
@@ -110,7 +132,7 @@ export const Host = () => {
 
 	return (
 		<Content className="host-content">
-			<Form layout="vertical" onFinish={handleFormFinish} onFinishFailed={handleFormFinishFailed}>
+			<Form form={form} layout="vertical" onFinish={handleFormFinish} onFinishFailed={handleFormFinishFailed}>
 				<div className="host__form-header">
 					<Title level={3} className="host__form-title">
 						Hi! Let's get started listing your place.
@@ -167,7 +189,7 @@ export const Host = () => {
 					name="address"
 					rules={[{ required: true, message: 'Please enter an address for your listing!' }]}
 					label="Address">
-					<Input placeholder="251 North Bristol Avenue" />
+					<Input ref={addressRef} id="placeSearch" placeholder="251 North Bristol Avenue" />
 				</Item>
 
 				<Item
@@ -201,7 +223,8 @@ export const Host = () => {
 							name="image"
 							listType="picture-card"
 							showUploadList={false}
-							action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+							customRequest={dummyRequest}
+							// action="https://run.mocky.io/v3/13478d8a-7eb2-4540-8219-99cbf0b97402"
 							beforeUpload={beforeImageUpload}
 							onChange={handleImageUpload}>
 							{imageBase64Value ? (
@@ -232,6 +255,13 @@ export const Host = () => {
 			</Form>
 		</Content>
 	);
+};
+
+// https://stackoverflow.com/questions/51514757/action-function-is-required-with-antd-upload-control-but-i-dont-need-it
+const dummyRequest = ({ file, onSuccess }: { file: File; onSuccess: any }) => {
+	setTimeout(() => {
+		onSuccess('ok');
+	}, 1500);
 };
 
 const beforeImageUpload = (file: File) => {

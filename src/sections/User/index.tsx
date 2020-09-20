@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { useParams } from 'react-router-dom';
+import { useRouteMatch, Route, NavLink, useParams } from 'react-router-dom';
 import { USER } from '../../lib/graphql/queries';
 import { User as UserData, UserVariables } from '../../lib/graphql/queries/User/__generated__/User';
-import { Layout, Col, Row } from 'antd';
+import { Layout, Menu, Avatar, Typography } from 'antd';
+import { UserOutlined, OrderedListOutlined, BookOutlined } from '@ant-design/icons';
 import { PageSkeleton, ErrorBanner } from '../../lib/components';
 import { UserProfile, UserListings, UserBookings } from './Components';
 import useViewerState from '../../lib/context/useViewerState';
 
-const { Content } = Layout;
+const { Text } = Typography;
+const { Content, Sider } = Layout;
 const PAGE_LIMIT = 4;
 
 interface Params {
@@ -18,10 +20,10 @@ interface Params {
 export const User = () => {
 	const { viewer } = useViewerState(); // global viewer state
 	const { id: idUrlParam } = useParams<Params>(); // this is "/user/:id"
+	const match = useRouteMatch();
 
 	const [listingsPage, setListingsPage] = useState(1);
 	const [bookingsPage, setBookingsPage] = useState(1);
-
 
 	const { data, error, loading, refetch } = useQuery<UserData, UserVariables>(USER, {
 		variables: {
@@ -31,8 +33,6 @@ export const User = () => {
 			listingsPage,
 		},
 	});
-
-
 
 	const user = data ? data.user : null;
 	const viewerIsUser = viewer.id === idUrlParam;
@@ -44,23 +44,29 @@ export const User = () => {
 
 	const userListingsElement = userListings ? (
 		<UserListings
+			viewerIsUser={viewerIsUser}
 			userListings={userListings}
 			listingsPage={listingsPage}
 			limit={PAGE_LIMIT}
 			setListingsPage={setListingsPage}
+			refetch={refetch}
 		/>
 	) : null;
 
-	const userBookingsElement = userListings ? (
-		<UserBookings
-			userBookings={userBookings}
-			bookingsPage={bookingsPage}
-			limit={PAGE_LIMIT}
-			setBookingsPage={setBookingsPage}
-		/>
-	) : null;
+	const userBookingsElement =
+		userBookings && viewerIsUser ? (
+			<UserBookings
+				viewerIsUser={viewerIsUser}
+				userBookings={userBookings}
+				bookingsPage={bookingsPage}
+				limit={PAGE_LIMIT}
+				setBookingsPage={setBookingsPage}
+			/>
+		) : (
+			<Text>You can't view another users Bookings.</Text>
+		);
 
-	const stripeError = new URL(window.location.href).searchParams.get("stripe_error");
+	const stripeError = new URL(window.location.href).searchParams.get('stripe_error');
 	const stripeErrorBanner = stripeError ? (
 		<ErrorBanner description="We had an issue connecting with Stripe. Please try again soon." />
 	) : null;
@@ -83,15 +89,65 @@ export const User = () => {
 	}
 
 	return (
-		<Content className="user">
-			{stripeErrorBanner}
-			<Row gutter={12} justify="space-between">
-				<Col xs={24}>{userProfileElement}</Col>
-				<Col xs={24}>
-					{userListingsElement}
-					{userBookingsElement}
-				</Col>
-			</Row>
-		</Content>
+		<Layout hasSider>
+			<Sider
+				// breakpoint={}
+				width={250}
+				className="user-sider">
+				<Menu
+					mode="inline"
+					// this is just a hack to add correct stying based on the path
+					defaultSelectedKeys={
+						match.path === '/user/:id'
+							? ['1']
+							: match.path === '/user/:id/listings'
+							? ['2']
+							: match.path === '/user/:id/bookings'
+							? ['3']
+							: ['']
+					}>
+					<div className="user-sider__menuitem-avatar">
+						<Avatar size={100} src={user?.avatar} />
+					</div>
+					<Menu.Item key="1" icon={<UserOutlined />}>
+						<NavLink exact activeClassName="ant-menu-item-selected ant-menu-item-active" to={`/user/${idUrlParam}`}>
+							Profile Info
+						</NavLink>
+					</Menu.Item>
+					<Menu.Item key="2" icon={<OrderedListOutlined />}>
+						<NavLink
+							exact
+							activeClassName="ant-menu-item-selected ant-menu-item-active"
+							to={`/user/${idUrlParam}/listings`}>
+							Listings
+						</NavLink>
+					</Menu.Item>
+					{viewerIsUser ? (
+						<Menu.Item key="3" icon={<BookOutlined />}>
+							<NavLink
+								exact
+								activeClassName="ant-menu-item-selected ant-menu-item-active"
+								to={`/user/${idUrlParam}/bookings`}>
+								Your Bookings
+							</NavLink>
+						</Menu.Item>
+					) : null}
+				</Menu>
+			</Sider>
+			<Layout>
+				<Content className="user">
+					{stripeErrorBanner}
+					<Route exact path="/user/:id">
+						{userProfileElement}
+					</Route>
+					<Route exact path="/user/:id/listings">
+						{userListingsElement}
+					</Route>
+					<Route exact path="/user/:id/bookings">
+						{userBookingsElement}
+					</Route>
+				</Content>
+			</Layout>
+		</Layout>
 	);
 };

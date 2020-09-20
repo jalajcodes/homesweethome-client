@@ -111,6 +111,11 @@
 .listing-card__address.ant-typography {
 	display: block;
 }
+.listing-card__dimensions {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
 .listing-card__dimensions i,
 .listing-card__dimensions span {
 	padding-right: 10px;
@@ -120,10 +125,23 @@
 	color: #bfbfbf;
 }
 .listing-card__dimensions--guests {
-	float: right;
+	display: inline;
 }
 .listing-card__dimensions--guests span {
 	padding-right: 0;
+}
+.listing-card__dimensions--actions span {
+	padding: 0 10px;
+}
+.listing-card__dimensions--actions {
+	display: inline;
+	padding: 5px;
+	position: absolute;
+	bottom: 17px;
+	right: 17px;
+	border-radius: 4px;
+	// box-shadow: 1px 0 10px 2px rgba(0, 0, 0, 0.2);
+	background: #ff932b;
 }
 @media (max-width: 75em) {
 	.listing-card__dimensions--guests {
@@ -133,7 +151,6 @@
 }
 @media (max-width: 48em) {
 	.listing-card__dimensions--guests {
-		float: right;
 		padding-bottom: 0;
 	}
 }
@@ -578,6 +595,21 @@
 	align-items: center;
 	justify-content: center;
 }
+.user-sider {
+	min-height: 100vh;
+	position: fixed;
+	left: 0;
+	overflow: auto;
+	background-color: #fff;
+	z-index: 100;
+}
+.user-sider__menuitem-avatar {
+	display: grid;
+	place-items: center;
+	padding-top: 20px;
+	pointer-events: none;
+	margin-bottom: 32px;
+}
 .user-bookings {
 	padding-top: 40px;
 }
@@ -619,6 +651,7 @@
 }
 .user-profile {
 	max-width: 400px;
+	padding-top: 60px;
 	margin: 0 auto;
 	display: block;
 }
@@ -638,11 +671,13 @@
 	margin-bottom: 20px;
 }
 .user {
-	padding: 60px 120px;
+	// padding: 60px 120px;
+	background-color: #fff;
+	padding: 0px 120px 0px 280px;
 }
 @media (max-width: 75em) {
 	.user {
-		padding-left: 20px;
+		padding-left: 280px;
 		padding-right: 20px;
 	}
 }

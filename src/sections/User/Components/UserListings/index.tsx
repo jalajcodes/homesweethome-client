@@ -7,12 +7,14 @@ interface Props {
 	userListings: User['user']['listings'];
 	listingsPage: number;
 	limit: number;
+	viewerIsUser: boolean;
 	setListingsPage: (page: number) => void;
+	refetch: () => void;
 }
 
 const { Paragraph, Title } = Typography;
 
-export const UserListings = ({ userListings, listingsPage, setListingsPage, limit }: Props) => {
+export const UserListings = ({ userListings, listingsPage, setListingsPage, limit, viewerIsUser, refetch }: Props) => {
 	const { total, result } = userListings;
 
 	const userListingsList = (
@@ -37,7 +39,7 @@ export const UserListings = ({ userListings, listingsPage, setListingsPage, limi
 			}}
 			renderItem={(userListing) => (
 				<List.Item>
-					<ListingCard listing={userListing} />
+					<ListingCard refetch={refetch} viewerIsUser={viewerIsUser} listing={userListing} />
 				</List.Item>
 			)}
 		/>

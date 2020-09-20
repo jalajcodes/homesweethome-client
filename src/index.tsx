@@ -5,14 +5,14 @@ import { ApolloClient, InMemoryCache, ApolloProvider, useMutation, createHttpLin
 import { setContext } from '@apollo/client/link/context';
 import { LOG_IN } from './lib/graphql/mutations/LogIn';
 import { LogIn as LogInData, LogInVariables } from './lib/graphql/mutations/LogIn/__generated__/LogIn';
-import * as serviceWorker from './serviceWorker';
 import './styles/index.less';
 import { Layout, Affix, Spin } from 'antd';
 import { Viewer } from './lib/types';
 import ViewerStateContext from '../src/lib/context/ViewerStateContext';
+import * as serviceWorker from './serviceWorker';
 
 // Components
-import { AppHeader, Home, User, Listings, Listing, Host, NotFound, Login, Stripe } from './sections';
+import { AppHeader, Home, User, Listings, Listing, Host, NotFound, Login, Stripe, EditListing } from './sections';
 import { AppHeaderSkeleton, ErrorBanner } from './lib/components';
 
 // check apollo docs for more info about this snippet
@@ -65,7 +65,6 @@ const App = () => {
 
 	useEffect(() => {
 		loginRef.current();
-
 	}, []);
 
 	const loginErrorBanner = error ? (
@@ -89,8 +88,6 @@ const App = () => {
 					{loginErrorBanner}
 					<Affix offsetTop={0} className="app__affix-header">
 						<div>
-
-
 							<AppHeader />
 						</div>
 					</Affix>
@@ -104,6 +101,9 @@ const App = () => {
 						<Route exact path="/listing/:id">
 							<Listing />
 						</Route>
+						<Route exact path="/listing/:id/edit">
+							<EditListing />
+						</Route>
 						<Route exact path="/listings/:location?">
 							<Listings />
 						</Route>
@@ -111,6 +111,12 @@ const App = () => {
 							<Login />
 						</Route>
 						<Route exact path="/user/:id">
+							<User />
+						</Route>
+						<Route exact path="/user/:id/listings">
+							<User />
+						</Route>
+						<Route exact path="/user/:id/bookings">
 							<User />
 						</Route>
 						<Route exact path="/stripe">

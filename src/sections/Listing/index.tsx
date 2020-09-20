@@ -11,8 +11,12 @@ import { ListingDetails, ListingBookings, ListingCreateBooking } from './compone
 const PAGE_LIMIT = 3;
 const { Content } = Layout;
 
+interface Params {
+	id: string;
+}
+
 export const Listing = () => {
-	const { id } = useParams();
+	const { id } = useParams<Params>();
 	const [bookingsPage, setBookingsPage] = useState(1);
 	const [checkInDate, setCheckInDate] = useState<Moment | null>(null);
 	const [checkOutDate, setCheckOutDate] = useState<Moment | null>(null);
