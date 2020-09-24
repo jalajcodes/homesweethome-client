@@ -24,7 +24,7 @@ export const UserProfile = ({ user, viewerIsUser, refetch }: Props) => {
 				setViewer({ ...viewer, hasWallet: data.stripeDisconnect.hasWallet });
 				displaySuccessNotification(
 					`You have successfully disconnected from Stripe`,
-					`You'll to reconnect Stripe to continue to create listings`
+					`You'll have to reconnect Stripe to continue to create listings.`
 				);
 				refetch();
 			}

@@ -5,11 +5,11 @@ import { ApolloClient, InMemoryCache, ApolloProvider, useMutation, createHttpLin
 import { setContext } from '@apollo/client/link/context';
 import { LOG_IN } from './lib/graphql/mutations/LogIn';
 import { LogIn as LogInData, LogInVariables } from './lib/graphql/mutations/LogIn/__generated__/LogIn';
-import './styles/index.less';
 import { Layout, Affix, Spin } from 'antd';
 import { Viewer } from './lib/types';
 import ViewerStateContext from '../src/lib/context/ViewerStateContext';
 import * as serviceWorker from './serviceWorker';
+import './styles/index.less';
 
 // Components
 import { AppHeader, Home, User, Listings, Listing, Host, NotFound, Login, Stripe, EditListing } from './sections';
@@ -110,15 +110,18 @@ const App = () => {
 						<Route exact path="/login">
 							<Login />
 						</Route>
-						<Route exact path="/user/:id">
+						<Route exact path="/user/:id/">
 							<User />
 						</Route>
-						<Route exact path="/user/:id/listings">
-							<User />
+						<Route exact path={['/user/:id/', '/user/:id/listings', '/user/:id/bookings']}>
+							<User /> {/* User components handles the ".../listings" & ".../bookings" routes */}
 						</Route>
-						<Route exact path="/user/:id/bookings">
-							<User />
-						</Route>
+						{/*  <Route exact path="/user/:id/listings">
+						 	<User />
+						 </Route>
+						 <Route exact path="/user/:id/bookings">
+						 	<User />
+						 </Route> */}
 						<Route exact path="/stripe">
 							<Stripe />
 						</Route>

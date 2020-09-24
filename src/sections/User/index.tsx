@@ -104,9 +104,10 @@ export const User = () => {
 							? ['2']
 							: match.path === '/user/:id/bookings'
 							? ['3']
-							: ['']
+							: ['1']
 					}>
 					<div className="user-sider__menuitem-avatar">
+						{/* <Avatar size={100} style={{ backgroundColor: iconColor }} icon={<UserOutlined />} /> */}
 						<Avatar size={100} src={user?.avatar} />
 					</div>
 					<Menu.Item key="1" icon={<UserOutlined />}>
