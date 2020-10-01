@@ -596,12 +596,8 @@
 	justify-content: center;
 }
 .user-sider {
-	min-height: 100vh;
-	position: fixed;
-	left: 0;
-	overflow: auto;
+	min-height: 100%;
 	background-color: #fff;
-	z-index: 100;
 }
 .user-sider__menuitem-avatar {
 	display: grid;
@@ -671,16 +667,15 @@
 	margin-bottom: 20px;
 }
 .user {
-	// padding: 60px 120px;
 	background-color: #fff;
-	padding: 0px 120px 0px 280px;
+	padding-left: 50px;
 }
-@media (max-width: 75em) {
-	.user {
-		padding-left: 280px;
-		padding-right: 20px;
-	}
-}
+// @media (max-width: 75em) {
+// 	.user {
+// 		padding-left: 280px;
+// 		padding-right: 20px;
+// 	}
+// }
 html {
 	overflow: auto;
 }

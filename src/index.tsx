@@ -7,6 +7,8 @@ import { LOG_IN } from './lib/graphql/mutations/LogIn';
 import { LogIn as LogInData, LogInVariables } from './lib/graphql/mutations/LogIn/__generated__/LogIn';
 import { Layout, Affix, Spin } from 'antd';
 import { Viewer } from './lib/types';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import ViewerStateContext from '../src/lib/context/ViewerStateContext';
 import * as serviceWorker from './serviceWorker';
 import './styles/index.less';
@@ -46,6 +48,7 @@ const initialViewerState: Viewer = {
 
 const App = () => {
 	const [viewer, setViewer] = useState<Viewer>(initialViewerState);
+	const stripePromise = loadStripe(process.env.REACT_APP_S_PUBLISHABLE_KEY as string);
 
 	const [login, { error }] = useMutation<LogInData, LogInVariables>(LOG_IN, {
 		onCompleted: (data) => {
@@ -99,7 +102,9 @@ const App = () => {
 							<Host />
 						</Route>
 						<Route exact path="/listing/:id">
-							<Listing />
+							<Elements stripe={stripePromise}>
+								<Listing />
+							</Elements>
 						</Route>
 						<Route exact path="/listing/:id/edit">
 							<EditListing />
@@ -116,12 +121,6 @@ const App = () => {
 						<Route exact path={['/user/:id/', '/user/:id/listings', '/user/:id/bookings']}>
 							<User /> {/* User components handles the ".../listings" & ".../bookings" routes */}
 						</Route>
-						{/*  <Route exact path="/user/:id/listings">
-						 	<User />
-						 </Route>
-						 <Route exact path="/user/:id/bookings">
-						 	<User />
-						 </Route> */}
 						<Route exact path="/stripe">
 							<Stripe />
 						</Route>

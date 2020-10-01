@@ -17,8 +17,12 @@ export const displayErrorMessage = (error: string) => {
 
 export const iconColor = '#ff932b';
 
+// export const formatListingPrice = (price: number, round = true) => {
+// 	const priceInDollars = round ? Math.floor(price / 100) : price / 100;
+// 	const formattedListingPrice = priceInDollars * 74;
+// 	return `₹${formattedListingPrice.toLocaleString()}`;
+// };
 export const formatListingPrice = (price: number, round = true) => {
-	const priceInDollars = round ? Math.round(price / 100) : price / 100;
-	const formattedListingPrice = priceInDollars * 74;
-	return `₹${formattedListingPrice.toLocaleString()}`;
+	const formattedListingPrice = round ? Math.round(price / 100) : price / 100;
+	return `$${formattedListingPrice}`;
 };

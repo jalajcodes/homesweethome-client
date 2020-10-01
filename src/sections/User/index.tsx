@@ -88,10 +88,12 @@ export const User = () => {
 		);
 	}
 
+
+
 	return (
 		<Layout hasSider>
 			<Sider
-				// breakpoint={}
+				breakpoint="lg"
 				width={250}
 				className="user-sider">
 				<Menu
