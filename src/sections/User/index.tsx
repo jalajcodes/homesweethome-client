@@ -88,14 +88,9 @@ export const User = () => {
 		);
 	}
 
-
-
 	return (
 		<Layout hasSider>
-			<Sider
-				breakpoint="lg"
-				width={250}
-				className="user-sider">
+			<Sider breakpoint="lg" width={250} className="user-sider">
 				<Menu
 					mode="inline"
 					// this is just a hack to add correct stying based on the path
@@ -110,7 +105,7 @@ export const User = () => {
 					}>
 					<div className="user-sider__menuitem-avatar">
 						{/* <Avatar size={100} style={{ backgroundColor: iconColor }} icon={<UserOutlined />} /> */}
-						<Avatar size={100} src={user?.avatar} />
+						<Avatar size="large" src={user?.avatar} />
 					</div>
 					<Menu.Item key="1" icon={<UserOutlined />}>
 						<NavLink exact activeClassName="ant-menu-item-selected ant-menu-item-active" to={`/user/${idUrlParam}`}>

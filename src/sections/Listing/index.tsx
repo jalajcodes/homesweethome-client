@@ -22,13 +22,23 @@ export const Listing = () => {
 	const [checkOutDate, setCheckOutDate] = useState<Moment | null>(null);
 	const [modalVisible, setModalVisible] = useState(false);
 
-	const { data, loading, error } = useQuery<ListingData, ListingVariables>(LISTING, {
+	const { data, loading, error, refetch } = useQuery<ListingData, ListingVariables>(LISTING, {
 		variables: {
 			id,
 			bookingsPage,
 			limit: PAGE_LIMIT,
 		},
 	});
+
+	const refetchListing = async () => {
+		await refetch();
+	};
+
+	const clearBookingData = () => {
+		setCheckOutDate(null);
+		setCheckInDate(null);
+		setModalVisible(false);
+	};
 
 	if (loading) {
 		return (
@@ -58,7 +68,7 @@ export const Listing = () => {
 					{/* Listing Details */}
 					{listing ? <ListingDetails listing={listing} /> : null}
 
-					{/* Bookings for above listing */}
+					{/* Bookings for above listing, only visible to the owner */}
 					{listingBookings ? (
 						<ListingBookings
 							limit={PAGE_LIMIT}
@@ -86,6 +96,9 @@ export const Listing = () => {
 			</Row>
 			{listing && checkInDate && checkOutDate && (
 				<ListingCreateBookingModal
+					id={listing.id}
+					clearBookingData={clearBookingData}
+					refetchListing={refetchListing}
 					price={listing.price}
 					modalVisible={modalVisible}
 					checkInDate={checkInDate}

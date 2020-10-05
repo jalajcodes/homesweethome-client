@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button, Menu, Avatar } from 'antd';
 import { HomeOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useViewerState from '../../../../lib/context/useViewerState';
 import { useMutation } from '@apollo/client';
 import { LOG_OUT } from '../../../../lib/graphql/mutations';
@@ -16,15 +17,15 @@ const { SubMenu, Item } = Menu;
 // }
 
 export const MenuItems = () => {
+	const history = useHistory();
 	const { viewer, setViewer } = useViewerState();
-	const [c, d] = useState(false);
 	const [logOut] = useMutation<LogOutData>(LOG_OUT, {
 		onCompleted: (data) => {
 			if (data && data.logout) {
 				setViewer(data.logout);
 				sessionStorage.removeItem('token');
-				displaySuccessNotification("You've been Successfully Logged Out.");
-				d(true);
+				displaySuccessNotification('Successfully Logged Out.');
+				history.push('/');
 			}
 		},
 		onError: () => {
@@ -35,10 +36,6 @@ export const MenuItems = () => {
 	const handleLogout = () => {
 		logOut();
 	};
-
-	if (c) {
-		return <Redirect to="/" />;
-	}
 
 	const subMenu =
 		viewer.id && viewer.avatar ? (

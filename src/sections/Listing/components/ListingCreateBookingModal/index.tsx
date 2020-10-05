@@ -1,27 +1,53 @@
 import React from 'react';
-import { Button, Divider, Modal, Typography } from 'antd';
+import { Button, Divider, message, Modal, Typography } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 import moment, { Moment } from 'moment';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { formatListingPrice } from '../../../../lib/utils';
+import { formatListingPrice, displayErrorMessage, displaySuccessNotification } from '../../../../lib/utils';
+import { useMutation } from '@apollo/client';
+import { CREATE_BOOKING } from '../../../../lib/graphql/mutations/CreateBooking';
+import {
+	CreateBooking as CreateBookingData,
+	CreateBookingVariables,
+} from '../../../../lib/graphql/mutations/CreateBooking/__generated__/CreateBooking';
 
 interface Props {
+	id: string;
 	modalVisible: boolean;
-	setModalVisible: (modalVisible: boolean) => void;
 	checkInDate: Moment;
 	checkOutDate: Moment;
 	price: number;
+	setModalVisible: (modalVisible: boolean) => void;
+	clearBookingData: () => void;
+	refetchListing: () => Promise<void>;
 }
 
 const { Paragraph, Title, Text } = Typography;
 
 export const ListingCreateBookingModal = ({
+	id,
 	checkInDate,
 	checkOutDate,
 	price,
 	modalVisible,
 	setModalVisible,
+	clearBookingData,
+	refetchListing,
 }: Props) => {
+	const [createBooking, { loading }] = useMutation<CreateBookingData, CreateBookingVariables>(CREATE_BOOKING, {
+		onCompleted: () => {
+			clearBookingData();
+			displaySuccessNotification(
+				"You've successfully booked the listing!",
+				'Booking history can always be found in your Profile.'
+			);
+			refetchListing();
+		},
+		onError: () => {
+			displayErrorMessage("Sorry! We weren't able to book the listing. Please try again later!");
+		},
+	});
+
 	const daysBooked = checkOutDate.diff(checkInDate, 'days') + 1;
 	const listingPrice = price * daysBooked;
 
@@ -35,8 +61,22 @@ export const ListingCreateBookingModal = ({
 
 		if (!cardElement) return;
 
-		const { token: stripeToken } = await stripe.createToken(cardElement);
-		console.log(stripeToken);
+		const { token: stripeToken, error } = await stripe.createToken(cardElement);
+
+		if (stripeToken) {
+			createBooking({
+				variables: {
+					input: {
+						id,
+						source: stripeToken.id,
+						checkIn: moment(checkInDate).format('YYYY-MM-DD'),
+						checkOut: moment(checkInDate).format('YYYY-MM-DD'),
+					},
+				},
+			});
+		} else {
+			displayErrorMessage(error && error.message ? error.message : 'Unable to Book the Listing. Try again later.');
+		}
 	};
 
 	return (
@@ -81,7 +121,12 @@ export const ListingCreateBookingModal = ({
 						className="listing-booking-modal__stripe-card"
 					/>
 
-					<Button size="large" type="primary" className="listing-booking-modal__cta" onClick={handleClick}>
+					<Button
+						loading={loading}
+						size="large"
+						type="primary"
+						className="listing-booking-modal__cta"
+						onClick={handleClick}>
 						Book
 					</Button>
 				</div>

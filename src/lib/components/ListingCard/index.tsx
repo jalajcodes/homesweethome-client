@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Typography, Modal } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { iconColor, formatListingPrice, displaySuccessNotification } from '../../utils';
 import { ListingCardActions } from './components';
@@ -77,16 +77,19 @@ export const ListingCard = ({ listing, viewerIsUser, refetch }: Props) => {
 			</Link>
 			{listingCardActionsElement}
 			<Modal
-				title="Confirm Delete"
-				okText="Delete"
-				okButtonProps={{ style: { background: 'red', color: 'white' } }}
+				title={'Are you sure you want to delete this listing?'}
+				okText="Yes"
+				cancelText="No"
+				// okButtonProps={{ style: { background: 'red', color: 'white' } }}
+				// cancelButtonProps={{ style: { background: '#00ff00d4', color: 'white' } }}
 				visible={showModal}
 				confirmLoading={loading}
 				onCancel={handleCancel}
 				onOk={handleDelete}>
-				<p>Are you sure you want to delete this listing? </p>
 				<p style={{ textTransform: 'uppercase' }}>
-					<strong>{title}</strong>
+					<Text strong>
+						<ArrowRightOutlined size={24} style={{ color: iconColor }} /> {title}
+					</Text>
 				</p>
 			</Modal>
 		</>
