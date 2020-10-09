@@ -1,5 +1,8 @@
 @import '~antd/dist/antd.less';
-// @import url(https://fonts.googleapis.com/css?family=Sacramento);
+@import url(https://fonts.googleapis.com/css?family=Sacramento);
+
+@accent: #55ec7b;
+
 .menu {
 	width: 100%;
 	padding: 0 20px;
@@ -141,7 +144,7 @@
 	right: 17px;
 	border-radius: 4px;
 	// box-shadow: 1px 0 10px 2px rgba(0, 0, 0, 0.2);
-	background: #ff932b;
+	background: @accent;
 }
 @media (max-width: 75em) {
 	.listing-card__dimensions--guests {
@@ -191,7 +194,7 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background: #eeac1dcb;
+	background: #53ec7b94;
 	opacity: 0.5;
 	-webkit-transition: all 0.3s linear;
 	transition: all 0.3s linear;
@@ -545,7 +548,7 @@
 }
 
 .guestLogin {
-	background-color: #ff932b;
+	background-color: @accent;
 }
 
 .log-in-card__google-button:last-of-type {

@@ -56,9 +56,7 @@ export const MenuItems = () => {
 		) : (
 			<Item>
 				<Link to="/login">
-					<Button shape="round" type="primary">
-						Login
-					</Button>
+					<Button type="primary">Login</Button>
 				</Link>
 			</Item>
 		);

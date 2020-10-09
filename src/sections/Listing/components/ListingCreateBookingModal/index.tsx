@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Divider, message, Modal, Typography } from 'antd';
+import { Button, Divider, Modal, Typography } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 import moment, { Moment } from 'moment';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -70,7 +70,7 @@ export const ListingCreateBookingModal = ({
 						id,
 						source: stripeToken.id,
 						checkIn: moment(checkInDate).format('YYYY-MM-DD'),
-						checkOut: moment(checkInDate).format('YYYY-MM-DD'),
+						checkOut: moment(checkOutDate).format('YYYY-MM-DD'),
 					},
 				},
 			});

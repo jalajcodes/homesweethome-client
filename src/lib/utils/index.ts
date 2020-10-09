@@ -15,7 +15,7 @@ export const displayErrorMessage = (error: string) => {
 	return message.error(error);
 };
 
-export const iconColor = '#ff932b';
+export const iconColor = '#55ec7b';
 
 // export const formatListingPrice = (price: number, round = true) => {
 // 	const priceInDollars = round ? Math.floor(price / 100) : price / 100;

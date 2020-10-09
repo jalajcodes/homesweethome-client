@@ -30,7 +30,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-	uri: '/api',
+	uri: 'https://hsh-server.herokuapp.com/api',
 });
 
 const client = new ApolloClient({
