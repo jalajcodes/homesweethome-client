@@ -37,7 +37,6 @@ const httpLink = createHttpLink({
 const client = new ApolloClient({
 	link: authLink.concat(httpLink),
 	cache: new InMemoryCache(),
-	credentials: 'include',
 });
 
 const initialViewerState: Viewer = {
