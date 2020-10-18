@@ -31,12 +31,13 @@ const authLink = setContext((_, { headers }) => {
 
 const httpLink = createHttpLink({
 	uri: 'https://hsh-server.herokuapp.com/api',
-	// credentials: 'include',
+	credentials: 'include',
 });
 
 const client = new ApolloClient({
 	link: authLink.concat(httpLink),
 	cache: new InMemoryCache(),
+	credentials: 'include',
 });
 
 const initialViewerState: Viewer = {
