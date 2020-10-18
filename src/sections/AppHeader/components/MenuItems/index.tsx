@@ -19,7 +19,7 @@ const { SubMenu, Item } = Menu;
 export const MenuItems = () => {
 	const history = useHistory();
 	const { viewer, setViewer } = useViewerState();
-	const [logOut] = useMutation<LogOutData>(LOG_OUT, {
+	const [logOut, { client }] = useMutation<LogOutData>(LOG_OUT, {
 		onCompleted: (data) => {
 			if (data && data.logout) {
 				setViewer(data.logout);
@@ -34,6 +34,7 @@ export const MenuItems = () => {
 	});
 
 	const handleLogout = () => {
+		client.resetStore();
 		logOut();
 	};
 
