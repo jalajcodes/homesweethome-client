@@ -54,7 +54,7 @@ export const Host = () => {
 				postalCode: e.result.postalCode,
 			});
 		});
-	}, [form]);
+	}, []);
 
 	// if the mutation is successfull, redirect the user
 	if (data && data.hostListing) {
