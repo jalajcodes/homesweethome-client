@@ -45,7 +45,7 @@ export const Host = () => {
 	useEffect(() => {
 		const place = window.placeSearch({
 			key: process.env.REACT_APP_M_KEY,
-			container: document.querySelector('#placeSearch'),
+			container: addressRef.current,
 		});
 		place.on('change', (e: any) => {
 			form.setFieldsValue({
@@ -54,7 +54,7 @@ export const Host = () => {
 				postalCode: e.result.postalCode,
 			});
 		});
-	}, []);
+	}, [form]);
 
 	// if the mutation is successfull, redirect the user
 	if (data && data.hostListing) {
