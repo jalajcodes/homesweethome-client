@@ -43,9 +43,9 @@ export const Host = () => {
 	});
 
 	useEffect(() => {
-		// console.log('addressRef.current out', addressRef.current);
+		console.log("document.querySelector('#placeSearch') OUT", document.querySelector('#placeSearch'));
 		if (addressRef.current !== undefined) {
-			// console.log('addressRef.current', addressRef.current);
+			console.log("document.querySelector('#placeSearch')", document.querySelector('#placeSearch'));
 			const place = window.placeSearch({
 				key: process.env.REACT_APP_M_KEY,
 				container: document.querySelector('#placeSearch'),
