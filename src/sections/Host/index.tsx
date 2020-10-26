@@ -43,12 +43,12 @@ export const Host = () => {
 	});
 
 	useEffect(() => {
-		console.log("document.querySelector('#placeSearch') OUT", document.querySelector('#placeSearch'));
-		if (addressRef.current !== undefined) {
-			console.log("document.querySelector('#placeSearch')", document.querySelector('#placeSearch'));
+		const addressInput = document.querySelector('#placeSearch');
+
+		if (addressInput !== null) {
 			const place = window.placeSearch({
 				key: process.env.REACT_APP_M_KEY,
-				container: document.querySelector('#placeSearch'),
+				container: addressInput,
 			});
 			place.on('change', (e: any) => {
 				form.setFieldsValue({
