@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Carousel, Col, Input, Row, Typography } from "antd";
-import { ArrowDownOutlined } from "@ant-design/icons";
+// import { ArrowDownOutlined } from "@ant-design/icons";
 import { Link, useHistory } from "react-router-dom";
 import { displayErrorMessage } from "../../../../lib/utils";
 

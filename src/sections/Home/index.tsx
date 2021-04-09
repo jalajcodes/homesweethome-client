@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { Col, Row, Layout, Typography } from "antd";
+import { Layout, Typography } from "antd";
 import { Link } from "react-router-dom";
 import mapBackground from "./assets/map-background.jpg";
-import sanFransiscoImage from "./assets/san-fransisco.jpg";
-import cancunImage from "./assets/cancun.jpg";
+// import sanFransiscoImage from "./assets/san-fransisco.jpg";
+// import cancunImage from "./assets/cancun.jpg";
 import { useQuery } from "@apollo/client";
 import { LISTINGS } from "../../lib/graphql/queries/Listings";
 import {
