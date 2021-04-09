@@ -26,8 +26,8 @@ export const HomeListings = ({ title, listings }: Props) => {
 					xl: 4,
 				}}
 				dataSource={listings}
-				renderItem={(listing) => (
-					<List.Item>
+				renderItem={(listing, i) => (
+					<List.Item data-aos="zoom-in" data-aos-duration={1000} data-aos-delay={500 * i}>
 						<ListingCard listing={listing} />
 					</List.Item>
 				)}

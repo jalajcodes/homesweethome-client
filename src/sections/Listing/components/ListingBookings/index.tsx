@@ -48,7 +48,7 @@ export const ListingBookings = ({ listingBookings, bookingsPage, setBookingsPage
 				return (
 					<List.Item className="listing-bookings__item">
 						{bookingHistory}
-						<Link to={listingBooking.tenant.id}>
+						<Link to={`/user/${listingBooking.tenant.id}`}>
 							<Avatar src={listingBooking.tenant.avatar} size={64} shape="square" />
 						</Link>
 					</List.Item>

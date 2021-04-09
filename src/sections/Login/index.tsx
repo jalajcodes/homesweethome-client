@@ -6,7 +6,10 @@ import { UserOutlined, GoogleOutlined } from '@ant-design/icons';
 import { AUTH_URL } from '../../lib/graphql/queries';
 import { LOG_IN, GUEST_LOGIN } from '../../lib/graphql/mutations';
 import { AuthUrl as AuthUrlData } from '../../lib/graphql/queries/AuthUrl/__generated__/AuthUrl';
-import { LogIn as LogInData, LogInVariables } from '../../lib/graphql/mutations/LogIn/__generated__/LogIn';
+import {
+	LogIn as LogInData,
+	LogInVariables,
+} from '../../lib/graphql/mutations/LogIn/__generated__/LogIn';
 import { GuestLogin as GuestLoginData } from '../../lib/graphql/mutations/LogIn/__generated__/GuestLogin';
 // import googleLogo from './assets/google_logo.jpg';
 import { ErrorBanner } from '../../lib/components';
@@ -20,7 +23,9 @@ import useViewerState from '../../lib/context/useViewerState';
 export const Login = () => {
 	const { setViewer } = useViewerState();
 
-	const [authQuery, { data: authQueryData, error: authQueryError }] = useLazyQuery<AuthUrlData>(AUTH_URL);
+	const [authQuery, { data: authQueryData, error: authQueryError }] = useLazyQuery<AuthUrlData>(
+		AUTH_URL
+	);
 	const [logInMutaion, { loading: logInLoading, error: logInError, data: logInData }] = useMutation<
 		LogInData,
 		LogInVariables
@@ -33,14 +38,19 @@ export const Login = () => {
 			}
 		},
 	});
-	const [guestLoginMutation, { loading: guestLoading, error: guestError, data: guestData }] = useMutation<
-		GuestLoginData
-	>(GUEST_LOGIN, {
+	const [
+		guestLoginMutation,
+		{ loading: guestLoading, error: guestError, data: guestData },
+	] = useMutation<GuestLoginData>(GUEST_LOGIN, {
 		onCompleted: (data) => {
 			if (data && data.loginAsGuest && data.loginAsGuest.token) {
 				setViewer(data.loginAsGuest);
 				sessionStorage.setItem('token', data.loginAsGuest.token);
-				displaySuccessNotification('Successfully logged in as a Test User!');
+				displaySuccessNotification(
+					'Successfully logged in as a Test User!',
+					"This account has only viewer rights, you can host a listing but you won't be able to book a listing from this account. To book a listing, logout and then login from a different account. ",
+					60
+				);
 			}
 		},
 	});
@@ -122,7 +132,9 @@ export const Login = () => {
 						<span className="log-in-card__google-button-text">Sign in with Google</span>
 					</div>
 				</button>
-				<button className="log-in-card__google-button guestLogin" onClick={() => guestLoginMutation()}>
+				<button
+					className="log-in-card__google-button guestLogin"
+					onClick={() => guestLoginMutation()}>
 					<div className="login-col-1">
 						<UserOutlined />
 					</div>
@@ -131,7 +143,8 @@ export const Login = () => {
 					</div>
 				</button>
 				<Text type="secondary">
-					Note: By signing in, you'll be redirected to the consent form to sign in with your account.
+					Note: By signing in, you'll be redirected to the consent form to sign in with your
+					account.
 				</Text>
 			</Card>
 		</Content>
