@@ -1,9 +1,14 @@
 import { message, notification } from 'antd';
 
-export const displaySuccessNotification = (message: string, description?: string) => {
+export const displaySuccessNotification = (
+	message: string,
+	description?: string,
+	duration?: number
+) => {
 	return notification['success']({
 		message,
 		description,
+		duration,
 		placement: 'topLeft',
 		style: {
 			marginTop: 50,
