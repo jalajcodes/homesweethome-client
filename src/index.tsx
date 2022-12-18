@@ -30,7 +30,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-	uri: process.env.REACT_APP_ENV === 'development' ? '/api' : 'https://hsh-server.herokuapp.com/api',
+	uri: process.env.REACT_APP_ENV === 'development' ? '/api' : 'https://hsh-server.onrender.com/api',
 	credentials: 'include',
 });
 
